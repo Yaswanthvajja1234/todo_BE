@@ -18,13 +18,12 @@ const moment = require('moment');
 const login = async (req, res) => {
     const data = await userModel.findOne({ email: req.body.email })
     if (!data) {
-        res.status(404)
         res.json({ status: 404, message: "User not found, Please check credentials and try again!" })
     }
     else {
         bcrypt.compare(req.body.password, data.password, function (err, result) {
             if (!result) {
-                res.status(404).json({ message: "Password does not match" })
+                res.json({status:404, message: "Password does not match" })
             }
             else {
                 const accessToken = jwt.sign({
@@ -56,7 +55,7 @@ const getuser = async (req, res) => {
 
 const createuser = async (req, res) => {
     try {
-        // console.log(req.body)
+        console.log(req.body)
         const { first_name, last_name, email, phone_Number, password } = req.body
         const uniquedata = await userModel.findOne({ email })
         if (uniquedata) {
@@ -139,6 +138,7 @@ const deleteuser = async (req, res) => {
         if (!deletedData) {
             res.status(404).json({ error: 'user not found' });
         }
+        const deleteTask= await todoModel.deleteMany({user_id:id})
         res.status(200).json({ message: "sucessfully deleted", data: deletedData });
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });

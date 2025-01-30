@@ -91,6 +91,7 @@ const edittodo =async (req, res) => {
 }
 
 const deletetodo =async (req, res) => {
+  console.log("calling")
     const id=req.params.id;
     try {
         // Find the document by ID and update it (Replace 'YourModel' with your actual model name)
@@ -98,6 +99,7 @@ const deletetodo =async (req, res) => {
         if (!deletedData) {
             res.status(404).json({ error: 'Document not found' });
           }
+          
           res.status(200).json({message:"sucessfully deleted",data:deletedData});
         } catch (error) {
           res.status(500).json({ error: 'Internal Server Error' });
